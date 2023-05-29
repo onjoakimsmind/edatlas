@@ -1,0 +1,36 @@
+name: Build
+on:
+  workflow_run:
+    workflows: ['Tests']
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  build:
+    name: Build (Node ${{ matrix.node-versions }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-versions: ['18.16.0']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js ${{ matrix.node-versions }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-versions }}
+      - name: Install Backend dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Install dependencies
+        run: |
+          npm -v
+          node -v
+          npm install
+      - name: Build
+        run: npm run build
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: dist
