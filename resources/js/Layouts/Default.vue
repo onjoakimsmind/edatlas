@@ -1,7 +1,7 @@
 <template>
   <Full :title="title">
     <div class="w-1/2 mx-auto">
-      <div class="w-full mt-12">
+      <div class="w-full mt-12 overflow-x">
         <slot />
       </div>
     </div>

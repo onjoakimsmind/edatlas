@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FactionHistory extends Model
 {
@@ -13,6 +14,12 @@ class FactionHistory extends Model
         'faction_id',
         'system_id',
         'influence',
+    ];
+
+    protected $hidden = [
+        'id',
+        'faction_id',
+        'system_id',
     ];
 
     const CREATED_AT = null;

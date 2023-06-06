@@ -72,7 +72,6 @@
       </div>
     </div>
     <div v-if="factions.length" class="mt-6">
-      <h5 class="text-xl font-bold dark:text-white">Factions</h5>
       <div
         class="flex w-full bg-white border rounded-sm shadow border-neutral-200 dark:bg-neutral-700 dark:border-neutral-800">
         <div class="flex flex-wrap w-full p-4 leading-normal">
@@ -108,14 +107,13 @@ interface Station {
 }
 
 interface System {
-  id: number
+  address: number
   name: string
 }
 
 interface Faction {
   name: string
   id: number
-  system_id: number
 }
 
 interface Commodity {

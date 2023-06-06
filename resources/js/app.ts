@@ -10,7 +10,9 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../tailwind.config.js'
 import { useSettings } from './store/settings'
-import * as configcat from 'configcat-js'
+
+import { growthBookPlugin } from "@/Utils/growthbook/growthbook";
+
 const fullConfig = resolveConfig(tailwindConfig)
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'ED Atlas'
@@ -18,8 +20,7 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
-const useLogging = true
-const key = import.meta.env.VITE_CONFIGCAT_SDK
+const sdk = import.meta.env.VITE_GROWTHBOOK_SDK
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
@@ -33,13 +34,11 @@ createInertiaApp({
     app.use(plugin)
     app.use(ZiggyVue, Ziggy)
     app.use(pinia)
+    app.use(growthBookPlugin, {
+      featuresEndpoint: `https://cdn.growthbook.io/api/features/${sdk}`,
+      enableDevMode: true,
+    });
     app.mount(el)
-
-    const logger = useLogging ? configcat.createConsoleLogger(configcat.LogLevel.Warn) : null
-    const configCatClient = configcat.getClient(key, configcat.PollingMode.AutoPoll, {
-      logger: logger,
-    })
-    app.config.globalProperties.$configCat = configCatClient
 
     const settings = useSettings()
     if (localStorage.getItem('settings') === null) {

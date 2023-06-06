@@ -1,6 +1,7 @@
 import { IFaction } from './IFaction'
 import { IStar } from './IStar'
 import { IPlanet } from './IPlanet'
+import { IStation } from './IStation'
 
 export interface ISystem {
   id: number
@@ -21,6 +22,7 @@ export interface ISystem {
   permit: boolean
   faction: IFaction
   factions: IFaction[]
+  stations: IStation[]
   stars?: IStar[]
   planets?: IPlanet[]
   updated_at: string

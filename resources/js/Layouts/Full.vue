@@ -1,18 +1,20 @@
 <template>
   <Head :title="title" />
-  <Header />
-  <div id="full" class="relative w-full">
-    <slot />
-    <div class="fixed bottom-4 right-4">
-      <Toast
-        v-if="toasts._toasts.value.length > 0"
-        v-for="toast in toasts._toasts.value"
-        :key="toast.id"
-        :id="toast.id"
-        :title="toast.title"
-        :message="toast.message"
-        :type="toast.type" />
+  <div class="relative flex flex-col w-full h-screen ">
+    <Header />
+    <div id="full" class="flex-grow w-full flex-grow-1">
+      <slot />
     </div>
+    <div class="fixed bottom-4 right-4">
+        <Toast
+          v-if="toasts._toasts.value.length > 0"
+          v-for="toast in toasts._toasts.value"
+          :key="toast.id"
+          :id="toast.id"
+          :title="toast.title"
+          :message="toast.message"
+          :type="toast.type" />
+      </div>
   </div>
 </template>
 <script lang="ts" setup>

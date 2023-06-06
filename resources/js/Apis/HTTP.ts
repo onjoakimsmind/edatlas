@@ -1,5 +1,4 @@
-import axios, { Axios, AxiosError } from 'axios'
-import { string } from '@poppinss/utils/build/helpers'
+import axios, { Axios } from 'axios'
 
 class HTTP {
   http: Axios = axios.create({
@@ -20,7 +19,12 @@ class HTTP {
   }
 
   public async get(name: string): Promise<any> {
-    const data = await this.http.get(route(`${this.root}.show`, { name }))
+    const data = await this.http.get(route(`${this.root}.show`, { system: name }))
+    return data
+  }
+
+  public async find(query: string): Promise<any> {
+    const data = await this.http.get(route(`${this.root}.search`, { q: query }))
     return data
   }
 }

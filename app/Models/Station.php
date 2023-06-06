@@ -34,6 +34,11 @@ class Station extends Model implements Explored
     const UPDATED_AT = 'updated_at';
 
     // SCOUT ELASTIC
+    public function searchableAs()
+    {
+        return 'stations';
+    }
+
     public function mappableAs(): array
     {
         return [
@@ -65,9 +70,8 @@ class Station extends Model implements Explored
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'name.keyword' => $this->name,
-            'place' => $this->place,
-            'lifespan' => $this->lifespan,
+            'market_id' => $this->market_id,
+            'system_id' => $this->system_id,
             'type' => $this->type,
             'distance_to_arrival' => $this->distance_to_arrival,
             'allegiance' => $this->allegiance,
@@ -81,7 +85,11 @@ class Station extends Model implements Explored
     }
 
     // RELATIONSHIPS
-
+    public function faction() : HasOne
+    {
+        return $this->hasOne(Faction::class, 'id', 'faction_id');
+    }
+    
     public function economies() : HasMany
     {
         return $this->hasMany(Economy::class, 'station_id', 'id');

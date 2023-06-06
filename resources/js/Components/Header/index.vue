@@ -1,7 +1,7 @@
 <template>
-  <nav class="bg-white border-neutral-200 dark:bg-neutral-800">
+  <nav class="z-10 w-full bg-white border-neutral-200 dark:bg-neutral-800">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
-      <a href="https://flowbite.com/" class="flex items-center">
+      <a href="/" class="flex items-center">
         <img :src="Icon" class="h-8 mr-3" alt="Flowbite Logo" />
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
           >ED Star Atlas</span
@@ -52,9 +52,9 @@
                   :href="route('logout')"
                   method="post"
                   as="button"
-                  class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >Sign out</Link
-                >
+                  class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                  Sign out
+                </Link>
               </li>
             </ul>
           </div>
@@ -181,7 +181,7 @@
           class="flex p-4 mt-5 font-medium border rounded-sm flex-colh-full border-neutral-100 md:p-0 bg-neutral-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-neutral-750 md:dark:bg-neutral-800 dark:border-neutral-700">
           <li>
             <a
-              href="#"
+              href="/"
               class="block py-2 pl-3 pr-4 text-white rounded bg-anzac-700 md:bg-transparent md:text-anzac-700 md:p-0 md:dark:text-anzac-500"
               aria-current="page"
               >Home</a

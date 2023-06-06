@@ -38,9 +38,11 @@ return [
      * of the mapping possibilities can be found in the documentation of Explorer's repository.
      */
     'indexes' => [
-        // \App\Models\Post::class
         \App\Models\System::class,
-        \App\Models\Station::class
+        \App\Models\Station::class,
+        \App\Models\Commodity::class,
+        \App\Models\Faction::class,
+        \App\Models\Star::class,
     ],
 
     /**

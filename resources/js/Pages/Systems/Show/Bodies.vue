@@ -20,65 +20,14 @@
         </ul>
       </div>
       <div
-        class="flex w-full bg-white border rounded-sm shadow h-96 border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700">
-        <div
-          class="w-32 h-full bg-right bg-cover"
-          style="background-image: url('/storage/Sun_sol.webp')"></div>
+        class="flex w-full bg-white border rounded-sm shadow border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700">
         <div class="flex flex-col w-full p-4 leading-normal">
           <div class="flex items-center justify-between">
             <h5 class="mb-2 text-3xl font-bold tracking-tight text-anzac-500 dark:text-anzac-500">
               {{ name }}
             </h5>
-            <div class="flex items-center">
-              <a
-                :href="route('systems.show.edit', { name })"
-                type="button"
-                data-tooltip-target="tooltip-edit"
-                data-tooltip-placement="bottom"
-                class="relative flex items-center justify-center h-8 p-2 text-sm font-medium text-center text-white uppercase rounded-sm cursor-pointer bg-river-bed-700 hover:bg-river-bed-800 focus:ring-4 focus:outline-none focus:ring-river-bed-300 dark:bg-river-bed-600 dark:hover:bg-river-bed-700 dark:focus:ring-river-bed-800">
-                <span class="mdi mdi-pencil"></span>
-                <span class="sr-only">Edit</span>
-              </a>
-              <div
-                id="tooltip-edit"
-                role="tooltip"
-                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                Edit
-                <div class="tooltip-arrow" data-popper-arrow></div>
-              </div>
-              <span
-                type="button"
-                data-tooltip-target="tooltip-set-location"
-                data-tooltip-placement="bottom"
-                class="relative flex items-center justify-center h-8 p-2 ml-2 text-sm font-medium text-center text-white uppercase rounded-sm cursor-pointer bg-river-bed-700 hover:bg-river-bed-800 focus:ring-4 focus:outline-none focus:ring-river-bed-300 dark:bg-river-bed-600 dark:hover:bg-river-bed-700 dark:focus:ring-river-bed-800">
-                <span class="mdi mdi-map-marker-outline"></span>
-                <span class="sr-only">Set Current Location</span>
-              </span>
-              <div
-                id="tooltip-set-location"
-                role="tooltip"
-                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                Set Current Location
-                <div class="tooltip-arrow" data-popper-arrow></div>
-              </div>
-              <span
-                type="button"
-                data-tooltip-target="tooltip-favorite"
-                data-tooltip-placement="bottom"
-                class="relative flex items-center justify-center w-8 h-8 p-2 ml-2 text-sm font-medium text-center text-white rounded-sm cursor-pointer bg-anzac-700 hover:bg-anzac-800 focus:ring-4 focus:outline-none focus:ring-anzac-300 dark:bg-anzac-600 dark:hover:bg-anzac-700 dark:focus:ring-anzac-800">
-                <span class="mdi mdi-star"></span>
-                <span class="sr-only">Notifications</span>
-              </span>
-              <div
-                id="tooltip-favorite"
-                role="tooltip"
-                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                Add to Favorites
-                <div class="tooltip-arrow" data-popper-arrow></div>
-              </div>
-            </div>
           </div>
-          <div class="flex w-full mt-6 text-xs uppercase text-neutral-400">
+          <div class="flex w-full mt-6 text-neutral-400">
             <div class="flex w-1/2">
               <div class="flex flex-col w-full">
                 <Info>
@@ -106,12 +55,40 @@
                     <span>{{ system.allegiance }}</span>
                   </template>
                 </Info>
+              </div>
+            </div>
+            <div class="flex w-1/2">
+              <div class="flex flex-col w-full">
                 <Info>
                   <template #key>
-                    <span>Population</span>
+                    <span>Star type</span>
                   </template>
                   <template #value>
-                    <span>{{ toLocaleString(system.population) }}</span>
+                    <span>
+                      Class {{ primaryStar?.type }} star
+                      <span
+                        v-if="primaryStar?.is_scoopable"
+                        class="ml-2 bg-neutral-100 text-neutral-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-neutral-700 dark:text-neutral-300"
+                        >Scoopable</span
+                      >
+                    </span>
+                  </template>
+                </Info>
+                <Info>
+                  <template #key>
+                    <span>Coordinates</span>
+                  </template>
+                  <template #value>
+                    <span>{{ system.x }} / {{ system.y }} / {{ system.z }}</span>
+                  </template>
+                </Info>
+                <Info>
+                  <template #key>
+                    <span>Permit Required</span>
+                  </template>
+                  <template #value>
+                    <span v-if="system.permit" class="text-red-500">Yes</span>
+                    <span v-else>No</span>
                   </template>
                 </Info>
               </div>
@@ -119,18 +96,46 @@
           </div>
         </div>
       </div>
+      <div
+        class="flex w-full mt-6 bg-white border rounded-sm shadow border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700">
+        <div class="flex flex-col w-full p-4 leading-normal">
+          <div class="flex items-center">
+            <h5 class="mb-2 text-xl font-bold tracking-tight text-anzac-500 dark:text-anzac-500">
+              {{ name }}
+              <span class="text-sm  text-anzac-300">
+              - Class {{ primaryStar?.type }} star
+              </span>
+            </h5>
+          </div>
+          <div class="w-full ">
+            <div class="w-1/2 text-neutral-800 dark:text-neutral-400">
+            <Info>
+              <template #key>
+                <span>Permit Required</span>
+              </template>
+              <template #value>
+                <span v-if="system.permit" class="text-red-500">Yes</span>
+                <span v-else>No</span>
+              </template>
+            </Info>
+          </div>
+          </div>
+        </div>
+      </div>
     </div>
   </Default>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, Ref } from 'vue'
+import { onMounted, ref, Ref, computed } from 'vue'
 import { initTooltips } from 'flowbite'
 import Default from '@/Layouts/Default.vue'
 import Info from '@/Components/System/Info.vue'
 
 import System from '@/Apis/System'
 
-import { toLocaleString } from '@/Utils'
+import { toLocaleString, DateFormat } from '@/Utils'
+
+import { IStar } from '@/Interfaces'
 
 interface Props {
   name: string
@@ -145,6 +150,10 @@ onMounted(async () => {
   const response = await System.get(props.name)
   console.log(response.data)
   system.value = response.data
+})
+
+const primaryStar = computed(() => {
+  return system.value.stars?.find((star: IStar) => star.is_main_star)
 })
 </script>
 <style lang="scss" scoped>

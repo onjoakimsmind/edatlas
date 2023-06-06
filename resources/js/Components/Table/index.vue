@@ -6,7 +6,7 @@
         <tr>
           <th
             @click="emitSort(head.key)"
-            class="px-6 py-3"
+            class="px-1 py-2"
             scope="col"
             v-for="head in th"
             :key="head.name">

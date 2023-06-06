@@ -86,6 +86,7 @@ export default {
                 'neutral': {
                     ...defaultTheme.colors.neutral,
                     '750': '#333339',
+                    '850': '#1a1a1f',
                 }
             }
         },

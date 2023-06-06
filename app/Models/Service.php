@@ -14,6 +14,12 @@ class Service extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'id',
+        'station_id',
+        'updated_at',
+    ];
+
     public $timestamps = ['updated_at'];
 
     const CREATED_AT = null;

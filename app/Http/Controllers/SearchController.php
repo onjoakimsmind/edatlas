@@ -38,28 +38,75 @@ class SearchController extends Controller
             'commodities' => [],
         ];
 
-        $params = [
+        $systemParams = [
             'index' => 'systems',
             'body' => [
                 'query' => [
-                    'bool' => [
-                        'must' => [
-                            'wildcard' => [
-                                'name' => "{$request->q}*"
-                            ]
+                    'match_phrase_prefix' => [
+                        'name' => [
+                            'query' => $query,
                         ]
                     ]
                 ],
-                'size' => 10
+                'size' => 10,
             ],
         ];
-        $response = $this->client->search($params);
-        $systems = collect($response['hits']['hits'])->pluck('_source')->toArray();
-        $results['stations'] = \App\Models\Station::select('name', 'market_id', 'system_id')->where('name', 'LIKE', "{$query}%")->with(['system' => function($q) {
-            $q->select('id', 'name')->pluck('name');
-        }])->limit(10)->get();
-        $results['systems'] = \App\Models\System::select('id', 'name')->where('name', 'LIKE', "{$query}%")->limit(20)->get();
-        $results['factions'] = \App\Models\Faction::select('id', 'name')->where('name', 'LIKE', "{$query}%")->groupBy('name')->orderBy('id','DESC')->limit(20)->get();
+
+        $stationParams = [
+            'index' => 'stations',
+            'body' => [
+                'query' => [
+                    'match_phrase_prefix' => [
+                        'name' => [
+                            'query' => $query,
+                        ]
+                    ]
+                ],
+                'size' => 10,
+            ],
+        ];
+
+        $factionParams = [
+            'index' => 'factions',
+            'body' => [
+                'query' => [
+                    'match_phrase_prefix' => [
+                        'name' => [
+                            'query' => $query,
+                        ]
+                    ]
+                ],
+                'size' => 10,
+            ],
+        ];
+
+        $sysResponse = $this->client->search($systemParams);
+        $systems = collect($sysResponse['hits']['hits'])->pluck('_source');
+
+        $staResponse = $this->client->search($stationParams);
+        $stations = collect($staResponse['hits']['hits'])->pluck('_source');
+
+        $facResponse = $this->client->search($factionParams);
+        $factions = collect($facResponse['hits']['hits'])->pluck('_source');
+        
+        $results['stations'] = $stations->map(function($item, $key) {
+            $response = $this->client->get([
+                'index' => 'systems',
+                'id' => $item['system_id'],
+            ]);
+            $system = $response['_source'];
+            return [
+                'name' => $item['name'],
+                'market_id' => $item['market_id'],
+                'system_id' => $item['system_id'],
+                'system' => [
+                    'name' => $system['name'],
+                    'id' => $item['system_id'],
+                ],
+            ];
+        });
+        $results['systems'] = $systems;
+        $results['factions'] = $factions;
         $results['commodities'] = collect($this->searchForName($query, array_merge(ED::$commodity, ED::$rare)));
 
         return response()->json($results);

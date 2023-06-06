@@ -18,8 +18,8 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+    return Inertia::render('Galaxy');
+})->name('galaxy');
 
 
 Route::get('/systems/{name}', function ($name) {
@@ -49,6 +49,10 @@ Route::get('/systems/{name}/map', function ($name) {
 Route::get('/search/{q}', function ($q) {
     return Inertia::render('Search', ['q' => $q]);
 })->name('search');
+
+Route::get('/factions/{name}', function ($name) {
+    return Inertia::render('Systems/Show/Index', [ 'name' => $name ]);    
+})->name('factions.show');
 
 Route::get('/shipyard', function () {
     return Inertia::render('Home');
